@@ -1,11 +1,15 @@
 const express = require("express");
 const app = express();
 const server = require("http").createServer(app);
+const cors = require("cors");
 const io = require("socket.io")(server);
 const { v4: uuidV4 } = require("uuid");
 
 app.set("view engine", "ejs");
+app.use(cors());
 app.use(express.static("public"));
+
+const PORT = process.env.PORT || 3002;
 
 // Generating roomId whenever the root route is visited
 // and then redirected to the roomId route
@@ -37,4 +41,4 @@ io.on("connection", (socket) => {
 });
 
 // Running the server
-server.listen(5000, () => console.log("Server running on the port 5000"));
+server.listen(PORT, () => console.log("Server running on the port " + PORT));
