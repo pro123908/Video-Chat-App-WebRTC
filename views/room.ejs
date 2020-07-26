@@ -20,6 +20,7 @@
     </style>
 
     <script>
+      // getting the room ID that is passed to the template and saving it in the variable
       const ROOM_ID = "<%= roomId %>";
     </script>
     <script
@@ -27,8 +28,10 @@
       defer
     ></script>
 
+    <!-- including socket library from the server -->
     <script src="/socket.io/socket.io.js" defer></script>
-    <script src="script.js" defer></script>
+
+    <script src="test.js" defer></script>
   </head>
   <body>
     <div id="video-grid"></div>
