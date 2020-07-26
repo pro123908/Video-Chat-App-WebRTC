@@ -7,12 +7,12 @@ const videoGrid = document.getElementById("video-grid");
 // first param is id which is left up to server
 // host is the root route
 // port on which peer js server is running
-const myPeer = new Peer(undefined, {
-  host: "/",
-  port: "5001",
-});
+// const myPeer = new Peer(undefined, {
+//   host: "/",
+//   port: "5001",
+// });
 
-console.log("peer => ", myPeer);
+// console.log("peer => ", myPeer);
 
 // creating video element to render your own video
 const myVideo = document.createElement("video");
@@ -74,16 +74,16 @@ function getUserMediaDevices(camera = "user") {
         vid2.src = videoURL;
       };
 
-      myPeer.on("call", (call) => {
-        //connection from new user and then you answer with your own stream
-        call.answer(stream);
-        const video = document.createElement("video");
+      // myPeer.on("call", (call) => {
+      //   //connection from new user and then you answer with your own stream
+      //   call.answer(stream);
+      //   const video = document.createElement("video");
 
-        // getting the other user stream
-        call.on("stream", (userVideoStream) => {
-          addVideoStream(video, userVideoStream);
-        });
-      });
+      //   // getting the other user stream
+      //   call.on("stream", (userVideoStream) => {
+      //     addVideoStream(video, userVideoStream);
+      //   });
+      // });
 
       // Whenever a new user comes in your room
       socket.on("new-user", (userId) => {
@@ -102,29 +102,25 @@ socket.on("user-disconnected", (userId) => {
 
 // STEP-1
 // when peer is opened
-myPeer.on("open", (id) => {
-  console.log("peer open => ", id);
-  socket.emit("join", ROOM_ID, id);
-});
+// myPeer.on("open", (id) => {
+//   console.log("peer open => ", id);
+//   socket.emit("join", ROOM_ID, id);
+// });
 
 function connectToNewUser(userId, stream) {
   // giving that new user your stream
-  const call = myPeer.call(userId, stream);
-
-  const video = document.createElement("video");
-
-  // On stream from the new user
-  call.on("stream", (userVideoStream) => {
-    // Stream from the other user
-    // adding that stream in the video grid
-    addVideoStream(video, userVideoStream);
-  });
-
-  // closing/removing video  when stream is closed
-  call.on("close", () => video.remove());
-
-  // adding new user call object in peers array
-  peers[userId] = call;
+  // const call = myPeer.call(userId, stream);
+  // const video = document.createElement("video");
+  // // On stream from the new user
+  // call.on("stream", (userVideoStream) => {
+  //   // Stream from the other user
+  //   // adding that stream in the video grid
+  //   addVideoStream(video, userVideoStream);
+  // });
+  // // closing/removing video  when stream is closed
+  // call.on("close", () => video.remove());
+  // // adding new user call object in peers array
+  // peers[userId] = call;
 }
 
 function addVideoStream(video, stream) {
