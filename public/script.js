@@ -22,61 +22,79 @@ myVideo.muted = true;
 // array to keep track of all users connected
 const peers = {};
 
-// STEP-1
-// getting stream from your devices such as camera and microphone
-navigator.mediaDevices
-  .getUserMedia({
-    video: true,
-    audio: true,
-  })
-  .then((stream) => {
-    // when connected to your devices, rendering video to the browser
-    // giving newly created video element and the stream from devices
-    addVideoStream(myVideo, stream);
+document.getElementById("front").addEventListener("click", () => {
+  getUserMediaDevices("user");
+});
 
-    let mediaRecorder = new MediaRecorder(stream);
-    let chunks = [];
+document.getElementById("back").addEventListener("click", () => {
+  getUserMediaDevices("environment");
+});
 
-    document.getElementById("record").addEventListener("click", () => {
-      mediaRecorder.start();
-      console.log(mediaRecorder.state);
-    });
+function getUserMediaDevices(camera = "user") {
+  // STEP-1
+  // getting stream from your devices such as camera and microphone
+  navigator.mediaDevices
+    .getUserMedia({
+      audio: true,
+      video: {
+        facingMode: {
+          exact: camera,
+        },
+      },
+    })
+    .then((stream) => {
+      // when connected to your devices, rendering video to the browser
+      // giving newly created video element and the stream from devices
+      addVideoStream(myVideo, stream);
+      console.log("Stream => ", stream);
 
-    document.getElementById("stop").addEventListener("click", () => {
-      mediaRecorder.stop();
-      console.log(mediaRecorder.state);
-    });
+      let mediaRecorder = new MediaRecorder(stream);
+      let chunks = [];
 
-    mediaRecorder.ondataavailable = (ev) => {
-      chunks.push(ev.data);
-    };
-
-    mediaRecorder.onstop = (ev) => {
-      let blob = new Blob(chunks, { type: "video/mp4" });
-      let vid2 = document.getElementById("vid2");
-      chunks = [];
-
-      let videoURL = window.URL.createObjectURL(blob);
-      vid2.src = videoURL;
-    };
-
-    myPeer.on("call", (call) => {
-      //connection from new user and then you answer with your own stream
-      call.answer(stream);
-      const video = document.createElement("video");
-
-      // getting the other user stream
-      call.on("stream", (userVideoStream) => {
-        addVideoStream(video, userVideoStream);
+      document.getElementById("record").addEventListener("click", () => {
+        mediaRecorder.start();
+        console.log(mediaRecorder.state);
       });
-    });
 
-    // Whenever a new user comes in your room
-    socket.on("new-user", (userId) => {
-      console.log("New user connected with id => ", userId);
-      connectToNewUser(userId, stream);
+      document.getElementById("stop").addEventListener("click", () => {
+        mediaRecorder.stop();
+        console.log(mediaRecorder.state);
+      });
+
+      mediaRecorder.ondataavailable = (ev) => {
+        chunks.push(ev.data);
+      };
+
+      mediaRecorder.onstop = (ev) => {
+        let blob = new Blob(chunks, { type: "video/mp4" });
+        let vid2 = document.getElementById("vid2");
+        chunks = [];
+
+        let videoURL = window.URL.createObjectURL(blob);
+        vid2.src = videoURL;
+      };
+
+      myPeer.on("call", (call) => {
+        //connection from new user and then you answer with your own stream
+        call.answer(stream);
+        const video = document.createElement("video");
+
+        // getting the other user stream
+        call.on("stream", (userVideoStream) => {
+          addVideoStream(video, userVideoStream);
+        });
+      });
+
+      // Whenever a new user comes in your room
+      socket.on("new-user", (userId) => {
+        console.log("New user connected with id => ", userId);
+        connectToNewUser(userId, stream);
+      });
+    })
+    .catch((err) => {
+      alert("No device");
     });
-  });
+}
 
 socket.on("user-disconnected", (userId) => {
   if (peers[userId]) peers[userId].close();

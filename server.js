@@ -9,7 +9,7 @@ app.set("view engine", "ejs");
 app.use(cors());
 app.use(express.static("public"));
 
-const PORT = process.env.PORT || 3002;
+const PORT = process.env.PORT || 3000;
 
 // Generating roomId whenever the root route is visited
 // and then redirected to the roomId route
