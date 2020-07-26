@@ -17,6 +17,12 @@
         width: 100%;
         object-fit: cover;
       }
+
+      #vid2 {
+        /* display: none; */
+        height: 300px;
+        width: 300px;
+      }
     </style>
 
     <script>
@@ -31,9 +37,17 @@
     <!-- including socket library from the server -->
     <script src="/socket.io/socket.io.js" defer></script>
 
-    <script src="test.js" defer></script>
+    <script src="script.js" defer></script>
   </head>
   <body>
     <div id="video-grid"></div>
+
+    <h3>
+      <button id="record">Record</button>
+      <button id="stop">Stop</button>
+    </h3>
+
+    <h3>Recorded Video</h3>
+    <video src="" id="vid2" controls></video>
   </body>
 </html>

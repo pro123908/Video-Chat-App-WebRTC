@@ -34,6 +34,32 @@ navigator.mediaDevices
     // giving newly created video element and the stream from devices
     addVideoStream(myVideo, stream);
 
+    let mediaRecorder = new MediaRecorder(stream);
+    let chunks = [];
+
+    document.getElementById("record").addEventListener("click", () => {
+      mediaRecorder.start();
+      console.log(mediaRecorder.state);
+    });
+
+    document.getElementById("stop").addEventListener("click", () => {
+      mediaRecorder.stop();
+      console.log(mediaRecorder.state);
+    });
+
+    mediaRecorder.ondataavailable = (ev) => {
+      chunks.push(ev.data);
+    };
+
+    mediaRecorder.onstop = (ev) => {
+      let blob = new Blob(chunks, { type: "video/mp4" });
+      let vid2 = document.getElementById("vid2");
+      chunks = [];
+
+      let videoURL = window.URL.createObjectURL(blob);
+      vid2.src = videoURL;
+    };
+
     myPeer.on("call", (call) => {
       //connection from new user and then you answer with your own stream
       call.answer(stream);
