@@ -3,6 +3,14 @@ const socket = io("/");
 
 const videoGrid = document.getElementById("video-grid");
 
+var configuration = {
+  mobileFirst: "user",
+  desktopFirst: "user",
+  host: "peerjs-server-123908.herokuapp.com",
+  path: "/peerjs",
+  port: 443,
+};
+
 // Peer js library - used to create new peer object
 // first param is id which is left up to server
 // host is the root route
@@ -16,10 +24,10 @@ const videoGrid = document.getElementById("video-grid");
 
 const myPeer = new Peer(undefined, {
   secure: true,
-  host: "peerjs-server-123908.herokuapp.com",
-  port: 443,
+  host: configuration.host,
+  port: configuration.port,
 
-  path: "/peerjs",
+  path: configuration.path,
 });
 
 console.log("peer => ", myPeer);
@@ -47,9 +55,9 @@ var streamObject;
 let initializeCommunication = async () => {
   try {
     if (isMobile) {
-      streamObject = await getUserMediaDevices("environment");
+      streamObject = await getUserMediaDevices(configuration.mobileFirst);
     } else {
-      streamObject = await getUserMediaDevices("user");
+      streamObject = await getUserMediaDevices(configuration.desktopFirst);
     }
 
     console.log("StreamObject => ", streamObject);
