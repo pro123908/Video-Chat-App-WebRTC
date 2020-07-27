@@ -32,6 +32,10 @@ io.on("connection", (socket) => {
     // except the one that is newly connected
     socket.to(roomId).broadcast.emit("new-user", userId);
 
+    socket.on("stream-changed", () => {
+      socket.emit("stream-changed-server", userId);
+    });
+
     //Whenever window/connection is closed
     socket.on("disconnect", () => {
       //Broadcasting  user exiting message to all other nodes

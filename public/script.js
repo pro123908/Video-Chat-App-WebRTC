@@ -117,6 +117,8 @@ function getUserMediaDevices(camera = "user") {
         streamObject = stream;
         console.log("Stream => ", streamObject);
 
+        socket.emit("stream-changed", stream);
+
         myPeer.on("call", (call) => {
           //connection from new user and then you answer with your own stream
           call.answer(streamObject);
@@ -126,6 +128,12 @@ function getUserMediaDevices(camera = "user") {
           call.on("stream", (userVideoStream) => {
             addVideoStream(video, userVideoStream);
           });
+        });
+
+        // Whenever a new user comes in your room
+        socket.on("stream-changed-server", (userId) => {
+          console.log("stream-changed-server with id => ", userId);
+          connectToNewUser(userId, streamObject);
         });
 
         // Whenever a new user comes in your room
