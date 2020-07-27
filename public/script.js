@@ -24,6 +24,14 @@ const myPeer = new Peer(undefined, {
 
 console.log("peer => ", myPeer);
 
+var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+  navigator.userAgent
+)
+  ? true
+  : false;
+
+document.getElementById("device").innerText = isMobile;
+
 // creating video element to render your own video
 const myVideo = document.createElement("video");
 // muting it obviously you don't wanna hear yourself
@@ -38,7 +46,12 @@ var streamObject;
 
 let initializeCommunication = async () => {
   try {
-    streamObject = await getUserMediaDevices("user");
+    if (isMobile) {
+      streamObject = await getUserMediaDevices("environment");
+    } else {
+      streamObject = await getUserMediaDevices("user");
+    }
+
     console.log("StreamObject => ", streamObject);
 
     mediaRecorder = new MediaRecorder(streamObject);
@@ -102,11 +115,11 @@ function getUserMediaDevices(camera = "user") {
         // giving newly created video element and the stream from devices
         addVideoStream(myVideo, stream);
         streamObject = stream;
-        console.log("Stream => ", stream);
+        console.log("Stream => ", streamObject);
 
         myPeer.on("call", (call) => {
           //connection from new user and then you answer with your own stream
-          call.answer(stream);
+          call.answer(streamObject);
           const video = document.createElement("video");
 
           // getting the other user stream
@@ -118,9 +131,9 @@ function getUserMediaDevices(camera = "user") {
         // Whenever a new user comes in your room
         socket.on("new-user", (userId) => {
           console.log("New user connected with id => ", userId);
-          connectToNewUser(userId, stream);
+          connectToNewUser(userId, streamObject);
         });
-        resolve(stream);
+        resolve(streamObject);
       })
       .catch((err) => {
         // reject(err);
