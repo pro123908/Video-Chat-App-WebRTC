@@ -19,3 +19,15 @@ body {
   background-color: black;
   color: #fff;
 }
+
+video {
+  height: 30rem;
+  width: 50rem;
+  margin: 2rem;
+}
+
+#video-grid {
+  padding: 5rem;
+  display: flex;
+  flex-wrap: wrap;
+}
