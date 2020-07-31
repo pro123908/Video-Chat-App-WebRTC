@@ -29,10 +29,27 @@
   <body>
     <!-- <h4>Mobile : <span id="device"></span></h4> -->
     <div id="video-grid">
-      <video controls src="assets/video-1.mp4"></video>
-      <video controls src="assets/video-2.mp4"></video>
-      <video controls src="assets/video-3.mp4"></video>
-      <video controls src="assets/video-4.mp4"></video>
+      <div class="video-container">
+        <video controls src="assets/video-1.mp4"></video>
+        <div class="buttons-container">
+          <button id="front" class="chat-button front-button">
+            Front Camera
+          </button>
+          <button id="back" class="chat-button back-button">Back Camera</button>
+          <button id="record" class="chat-button front-button">Record</button>
+          <button id="stop" class="chat-button front-button">Stop</button>
+        </div>
+      </div>
+
+      <div class="video-container">
+        <video controls src="assets/video-2.mp4"></video>
+      </div>
+      <div class="video-container">
+        <video controls src="assets/video-3.mp4"></video>
+      </div>
+      <div class="video-container">
+        <video controls src="assets/video-4.mp4"></video>
+      </div>
     </div>
 
     <h3>
