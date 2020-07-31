@@ -62,18 +62,31 @@ video {
 }
 
 .front-button {
-  padding: 1rem 2rem;
+  padding: 0.5rem 1rem;
 
   background-color: #2a4b7c;
   color: #fff;
 }
 
 .back-button {
-  padding: 1rem 2rem;
+  padding: 0.5rem 1rem;
   background-color: #009b77;
   color: #fff;
 }
 
+.record-button {
+  background-color: #dd4124;
+  padding: 0.5rem 1rem;
+
+  color: #fff;
+}
+
+.stop-button {
+  background-color: #efc050;
+  padding: 0.5rem 1rem;
+
+  color: #fff;
+}
 @media only screen and (max-width: 1300px) {
   html {
     font-size: 55%;
@@ -100,6 +113,7 @@ video {
 
   .video-container {
     width: 100%;
+    margin-bottom: 2rem;
   }
 
   video {

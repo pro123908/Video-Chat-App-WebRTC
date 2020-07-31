@@ -38,7 +38,7 @@ var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.
   ? true
   : false;
 
-document.getElementById("device").innerText = isMobile;
+// document.getElementById("device").innerText = isMobile;
 
 // creating video element to render your own video
 const myVideo = document.createElement("video");
@@ -104,7 +104,7 @@ document.getElementById("back").addEventListener("click", () => {
 
 initializeCommunication();
 
-function getUserMediaDevices(camera = "user") {
+function getUserMediaDevices(camera = "user", cameraChanged = false) {
   // STEP-1
   // getting stream from your devices such as camera and microphone
 
@@ -121,7 +121,7 @@ function getUserMediaDevices(camera = "user") {
       .then((stream) => {
         // when connected to your devices, rendering video to the browser
         // giving newly created video element and the stream from devices
-        addVideoStream(myVideo, stream);
+        addVideoStream(myVideo, stream, true, cameraChanged);
         streamObject = stream;
         console.log("Stream => ", streamObject);
 
@@ -190,7 +190,12 @@ function connectToNewUser(userId, stream) {
   peers[userId] = call;
 }
 
-function addVideoStream(video, stream) {
+function addVideoStream(
+  video,
+  stream,
+  personal = false,
+  cameraChanged = false
+) {
   // setting source attribute of the video element to the stream to play
   video.srcObject = stream;
 
@@ -200,8 +205,50 @@ function addVideoStream(video, stream) {
     video.play();
   });
 
+  var videoContainer = document.createElement("div");
+  videoContainer.classList.add("video-container");
+  videoContainer.append(video);
+  if (personal && !cameraChanged) {
+    var buttonContainer = document.createElement("div");
+    buttonContainer.classList.add("buttons-container");
+
+    var frontButton = document.createElement("button");
+    frontButton.classList.add("chat-button");
+    frontButton.classList.add("front-button");
+    frontButton.innerText = "Front";
+
+    frontButton.addEventListener("click", () =>
+      getUserMediaDevices("user", true)
+    );
+
+    var backButton = document.createElement("button");
+    backButton.classList.add("chat-button");
+    backButton.classList.add("back-button");
+    backButton.innerText = "Back";
+
+    backButton.addEventListener("click", () =>
+      getUserMediaDevices("environment", true)
+    );
+
+    var recordButton = document.createElement("button");
+    recordButton.classList.add("chat-button");
+    recordButton.classList.add("record-button");
+    recordButton.innerText = "Record";
+
+    var stopButton = document.createElement("button");
+    stopButton.classList.add("chat-button");
+    stopButton.classList.add("stop-button");
+    stopButton.innerText = "Stop";
+
+    buttonContainer.append(frontButton);
+    buttonContainer.append(backButton);
+    buttonContainer.append(recordButton);
+    buttonContainer.append(stopButton);
+    videoContainer.append(buttonContainer);
+  }
+
   // and in last adding the video to the grid of the videos so that it can be seen
-  videoGrid.append(video);
+  videoGrid.append(videoContainer);
 }
 
 /*
