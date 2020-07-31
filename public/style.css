@@ -8,18 +8,6 @@
 
 html {
   font-size: 62.5%;
-
-  /* @media only screen and (max-width: 1300px) {
-    font-size: 55%;
-  } */
-
-  /* @media only screen and (max-width: 1100px) {
-    font-size: 50%;
-  }
-
-  @media only screen and (max-width: 1000px) {
-    font-size: 45%;
-  } */
 }
 
 body {
@@ -33,21 +21,20 @@ body {
 }
 
 video {
-  height: 40rem;
+  height: 30rem;
 
   /* margin: 2rem; */
   flex: 1;
 }
 
 .video-container {
-  flex: 1;
+  /* flex: 1; */
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   align-self: flex-start;
 }
-
-#video-grid {
+.video-grid {
   padding: 5rem;
   display: flex;
   flex-wrap: wrap;
@@ -66,12 +53,12 @@ video {
 .chat-button {
   padding: 2rem 3rem;
   cursor: pointer;
-  font-size: 1.8rem;
+  /* font-size: 1.8rem; */
   border: none;
   outline: none;
 
   font-family: inherit;
-  margin: 0rem 2rem;
+  margin: 0rem 0.5rem;
 }
 
 .front-button {
@@ -85,4 +72,37 @@ video {
   padding: 1rem 2rem;
   background-color: #009b77;
   color: #fff;
+}
+
+@media only screen and (max-width: 1300px) {
+  html {
+    font-size: 55%;
+  }
+}
+
+@media only screen and (max-width: 1100px) {
+  html {
+    font-size: 50%;
+  }
+}
+
+@media only screen and (max-width: 1000px) {
+  html {
+    font-size: 45%;
+  }
+}
+
+@media only screen and (max-width: 1000px) {
+  .video-grid {
+    flex-direction: column;
+    justify-content: stretch;
+  }
+
+  .video-container {
+    width: 100%;
+  }
+
+  video {
+    width: 100%;
+  }
 }
